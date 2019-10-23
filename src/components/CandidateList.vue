@@ -77,10 +77,18 @@ export default {
     async handleVote (index, row) {
       const { candidates } = await api.vote(row.id)
       this.tableData = candidates
+      this.$alert('Successful! Please do not vote twice.', 'Vote', {
+        confirmButtonText: 'Confirm'
+      })
     },
     async handleDelete (index, row) {
-      const { candidates } = await api.deleteCandidate(row.id)
-      this.tableData = candidates
+      this.$confirm('Are you sure to delete the candidate?', 'Delete', {
+        confirmButtonText: 'Confirm',
+        cancelButtonText: 'Cancel'
+      }).then(async () => {
+        const { candidates } = await api.deleteCandidate(row.id)
+        this.tableData = candidates
+      })
     }
   },
 
